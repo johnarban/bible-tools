@@ -1,0 +1,37 @@
+# coding: utf-8
+import string
+import re
+import pandas as pd
+import xml.etree.ElementTree as ET
+from tqdm import tqdm
+from collections import Counter
+
+etree = ET.parse('bible-translations/nkjv.xml')
+
+dfcols = ['book', 'chapter', 'verse', 'text']
+df = pd.DataFrame(columns=dfcols)
+
+for item in tqdm(etree.iter()):
+    if item.tag == 'book':
+        book = item.attrib['name']
+    elif item.tag == 'chapter':
+        chapter = item.attrib['name']
+    elif item.tag == 'verse':
+        verse = item.attrib['name']
+        text = item.text
+        data = [book, chapter, verse, text]
+        df = df.append(pd.Series(data, index=dfcols), ignore_index=True)
+    else:
+        pass
+
+text = df['text'] 
+textlist = text.to_list()
+cleanlist = [i for i in textlist if i]  # clear Nones
+textlong = ' '.join(cleanlist)
+regex = re.compile('[0-9]')
+cleanlong = regex.sub('', textlong)
+regex2 = re.compile('[%s]' % re.escape(string.punctuation))
+cleanerlong = regex2.sub('', cleanlong)
+allsonofman = [m.start() for m in re.finditer('son of man', cleanerlong.lower())]
+
+
