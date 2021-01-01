@@ -1,5 +1,5 @@
-import pandas as pd 
-import xml.etree.ElementTree as ET 
+import pandas as pd
+import xml.etree.ElementTree as ET
 from tqdm import tqdm
 from collections import Counter
 
@@ -20,8 +20,8 @@ for item in tqdm(etree.iter()):
         df = df.append(pd.Series(data,index=dfcols),ignore_index=True)
     else:
         pass
-    
+
 df.to_excel('nkjv.xlsx')
 books = df['book']
 bookcount = pd.DataFrame.from_dict(Counter(books),orient='index')
-bookcount.plot(kind='bar',yscale='log')
+#bookcount.plot(kind='bar',yscale='log')
