@@ -3,7 +3,7 @@ import xml.etree.ElementTree as ET
 from tqdm import tqdm
 from collections import Counter
 
-etree = ET.parse('bible-translations/nkjv.xml')
+etree = ET.parse('bible-translations/msg.xml')
 
 dfcols = ['book','chapter','verse','text']
 df = pd.DataFrame(columns = dfcols)
@@ -21,7 +21,7 @@ for item in tqdm(etree.iter()):
     else:
         pass
 
-df.to_excel('nkjv.xlsx')
+df.to_excel('msg.json')
 books = df['book']
-bookcount = pd.DataFrame.from_dict(Counter(books),orient='index')
+# bookcount = pd.DataFrame.from_dict(Counter(books),orient='index')
 #bookcount.plot(kind='bar',yscale='log')
